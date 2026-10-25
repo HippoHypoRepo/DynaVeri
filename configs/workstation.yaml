@@ -1,0 +1,46 @@
+# configs/workstation.yaml
+
+system:
+  camera_index: 0
+  frame_width: 1280
+  frame_height: 720
+  device: "cuda:0"
+
+engine:
+  # Mode options: "text" (YOLO-World) or "visual" (YOLOE SAVPE)
+  active_mode: "text"
+  
+  # YOLO-World configuration
+  text_prompting:
+    model_checkpoint: "yolov8m-worldv2.pt"
+    # Open-vocabulary models require conservative confidence boundaries
+    confidence_threshold: 0.12
+    iou_threshold: 0.45
+    # Target item labels to bake into the RepVL-PAN in-memory
+    target_classes:
+      - "laptop"
+      - "mouse"
+      - "coffee cup"
+      - "book"
+      - "cellphone"
+
+  # YOLOE SAVPE visual prompting configuration
+  visual_prompting:
+    model_checkpoint: "yoloe-26m-seg.pt"
+    confidence_threshold: 0.10
+    iou_threshold: 0.40
+    # Exemplar specification: reference image and normalized or pixel [xmin, ymin, xmax, ymax]
+    exemplars:
+      - name: "custom_token"
+        image_path: "assets/exemplars/token_sample.jpg"
+        bbox: [120, 85, 340, 410]
+
+state_machine:
+  # Verification mode:
+  # - "simultaneous": All target items must be present at the exact same time
+  # - "latch": Items are checked off cumulatively and remain verified
+  verification_mode: "simultaneous"
+  
+  # Temporal persistence parameters
+  debounce_frames: 5        # Frames an object must continuously appear to be marked VERIFIED
+  decay_frames: 10          # Grace period frames before an occluded item drops back to ABSENT

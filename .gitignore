@@ -1,0 +1,33 @@
+# Virtual Environments
+.venv/
+venv/
+env/
+.env
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Model Weights & Exports
+*.pt
+*.onnx
+*.engine
+*.hef
+
+# Media & Data Outputs
+assets/calibration_1024/
+runs/
+*.mp4
+*.avi
+*.mkv
+
+# IDE & System Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Weights
+weights/
+
